@@ -20,52 +20,54 @@ endif
 
 " PLUGINS {{{
 call plug#begin('~/.vim/plugged')
-Plug 'skywind3000/asyncrun.vim'
-Plug 'scrooloose/nerdtree'  " file list
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'  "to highlight files in nerdtree
-Plug 'majutsushi/tagbar'  " show tags in a bar (functions etc) for easy browsing
-Plug 'mbbill/undotree'
+" Plug 'skywind3000/asyncrun.vim'
+" Plug 'scrooloose/nerdtree'  " file list
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'  "to highlight files in nerdtree
+" Plug 'majutsushi/tagbar'  " show tags in a bar (functions etc) for easy browsing
+" Plug 'mbbill/undotree'
 Plug 'Konfekt/FastFold'  " fast folding
-Plug 'godlygeek/tabular'
+" Plug 'godlygeek/tabular'
 Plug 'kana/vim-surround'
-Plug 'jiangmiao/auto-pairs', {'on': 'PAIRSToggle'}
-Plug 'w0rp/ale', { 'on':  'ALEToggle'  }
-Plug 'rhysd/vim-grammarous'
-Plug 'junegunn/goyo.vim'
-Plug 'gabrielelana/vim-markdown'
+Plug 'jiangmiao/auto-pairs' " , {'on': 'PAIRSToggle'}
+Plug 'w0rp/ale' " , { 'on':  'ALEToggle'  }
+Plug 'mattn/emmet-vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'ycm-core/YouCompleteMe'
+" Plug 'rhysd/vim-grammarous'
+" Plug 'junegunn/goyo.vim'
+" Plug 'gabrielelana/vim-markdown'
 " Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 " COMPLETION {{{
 Plug 'ervandew/supertab'  " for autocompletion using <TAB>
-Plug 'Shougo/neco-syntax'
-Plug 'Shougo/neco-vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
-Plug 'yami-beta/asyncomplete-omni.vim'
-Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
-Plug 'prabirshrestha/asyncomplete-tags.vim'
-Plug 'prabirshrestha/asyncomplete-necovim.vim'
+"Plug 'Shougo/neco-syntax'
+"Plug 'Shougo/neco-vim'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"Plug 'prabirshrestha/asyncomplete-file.vim'
+"Plug 'yami-beta/asyncomplete-omni.vim'
+"Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
+"Plug 'prabirshrestha/asyncomplete-tags.vim'
+"Plug 'prabirshrestha/asyncomplete-necovim.vim'
 " }}}
 " PYTHON {{{
-Plug 'davidhalter/jedi-vim', {'for': 'python'}   " jedi for python
-Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}  "better indenting for python
+" Plug 'davidhalter/jedi-vim', {'for': 'python'}   " jedi for python
+" Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}  "better indenting for python
 Plug 'tmhedberg/SimpylFold', {'for': 'python'}  " for nice python folding
-Plug 'tweekmonster/impsort.vim', {'for': 'python'}  " color and sort imports
+" Plug 'tweekmonster/impsort.vim', {'for': 'python'}  " color and sort imports
 "Plug 'plytophogy/vim-virtualenv', {'for': 'python'} " virtualenv support
 "Plug 'PieterjanMontens/vim-pipenv', {'for': 'python'}
 " }}}
 " GIT {{{
-Plug 'airblade/vim-gitgutter'  " show git changes to files in gutter
+" Plug 'airblade/vim-gitgutter'  " show git changes to files in gutter
 Plug 'tpope/vim-fugitive'
 " }}}
 " NOT NOW{{{
-"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-"Plug 'junegunn/fzf.vim'
-"Plug 'tpope/vim-commentary'  "comment-out by gc
-"Plug 'wsdjeg/FlyGrep.vim'  " awesome grep on the fly
-"Plug 'easymotion/vim-easymotion'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-commentary'  "comment-out by gc
+Plug 'sainnhe/sonokai'
 " }}}
 call plug#end()
 " }}}
@@ -79,7 +81,8 @@ syntax on
 filetype plugin indent on
 scriptencoding utf-8
 
-set nowrap textwidth=79 colorcolumn=80
+
+set nowrap textwidth=79 " colorcolumn=80
 set autochdir
 set autoindent smartindent
 set autoread
@@ -136,7 +139,6 @@ au WinLeave * set nocursorline nocursorcolumn
 au WinEnter * set cursorline nocursorcolumn
 set cursorline nocursorcolumn
 
-
 set sessionoptions=blank,buffers,curdir,folds,help,localoptions,tabpages,winsize
 set switchbuf=useopen,usetab
 
@@ -187,16 +189,6 @@ set wildignore+=log/**
 set wildignore+=tmp/**,*/tmp/*
 "}}}
 " AUTOCMD {{{
-"function! DelWhitespace()
-    "execute \":retab\"
-    ":%s/\s\+$//g
-"endfunction
-"command! Unfuck execute DelWhitespace()
-"
-"autocmd BufWrite *.py :call DelWhitespace()
-"autocmd BufWrite *.coffee :call DelWhitespace()
-
-
 autocmd FileType python,javascript setlocal ts=4 sw=4 sts=4 expandtab autoindent
 autocmd FileType php,snippets setlocal ts=4 sw=4 sts=4 noexpandtab
 autocmd FileType html,xhtml setlocal ts=2 sts=2 sw=2
@@ -212,27 +204,23 @@ autocmd FileType c,cpp,java,javascript,css,php,conf setlocal foldmarker={,}
 autocmd FileType c,cpp,java,javascript,css,php,conf setlocal foldlevel=1
 autocmd FileType c,cpp,java,javascript,css,php,conf normal zM
 
+autocmd FileType html,xhtml,xml,haml,jst setlocal foldmethod=indent
+autocmd FileType html,xhtml,xml,haml,hst setlocal foldlevel=20
+autocmd FileType html,xhtml,xml,haml,jst normal zR
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " Disable comment new line
 
 autocmd BufWritePost *Xresources,*Xdefaults !xrdb %
 autocmd BufWritePost *aliasrc,*bashrc,*bash_prompt !source %
-" autocmd BufWritePost *vimrc :source %
+" autocmd BufWritePost *vimrc :source % " take to much time to reload
 autocmd BufWritePost *tmux.conf !tmux source-file %
 
 
 "autocmd FileType cpp,java setlocal equalprg=astyle\ -A1sCSNLYpHUEk1xjcn
-"autocmd FileType python setlocal makeprg=pylint
+autocmd FileType python setlocal makeprg=pylint
+autocmd FileType python setlocal formatprg=autopep8\ -
 "autocmd FileType c setlocal commentstring=//\ %s
 "autocmd FileType cpp setlocal commentstring=//\ %s
-"autocmd FileType python setlocal fdm=indent formatprg=autopep8\ -
-
-
-"autocmd FileType html,xhtml,xml,haml,jst,python,ruby setlocal foldmethod=indent
-"autocmd FileType python,ruby setlocal foldlevel=1
-"autocmd FileType html,xhtml,xml,haml,hst setlocal foldlevel=20
-"autocmd FileType html,xhtml,xml,haml,jst,ruby normal zR
-
 "}}}
 " KEYMAPPING {{{
 nnoremap <bs> <nop>
@@ -328,73 +316,32 @@ nnoremap <leader>bd :bdelete<cr>
 nnoremap <leader>bb :buffers<cr>:buffer
 "}}}
 " PLUGIN KEYBINDS {{{
-nnoremap <C-n> :NERDTreeToggle<CR>
-nnoremap <C-t> :TagbarToggle<CR>
-nnoremap <C-e> :UndotreeToggle<CR>
-nnoremap <C-w> :call asyncrun#quickfix_toggle(8)<CR>
-nnoremap <C-r> :AsyncRun ctags -R .<CR>
-"nnoremap <C-t> :set nosplitright<CR>:TagbarToggle<CR>:set splitright<CR>
-
-" imap <c-x><c-w> <plug>(fzf-complete-word)
-" imap <c-x><c-p> <plug>(fzf-complete-path)
-" imap <c-x><c-f> <plug>(fzf-complete-file)
-" imap <c-x><c-a> <plug>(fzf-complete-file-ag)
-" imap <c-x><c-l> <plug>(fzf-complete-line)
-" nnoremap <leader><c-w> <plug>(fzf-complete-word)
-
-" nmap <leader><tab> <plug>(fzf-maps-n)
-" xmap <leader><tab> <plug>(fzf-maps-x)
-" omap <leader><tab> <plug>(fzf-maps-o)
-
-
-
-" open with locate or find command
-" tutorial video: https://www.youtube.com/watch?v=X0KPl5O006M
-" noremap <leader>o :exec '!xdg-open ' . shellescape(getline('.')) <CR><CR>
-" noremap <leader>mp :exec '!mplayer ' . shellescape(getline('.')) <CR><CR>
-" noremap <leader>p :exec '!vlc $(youtube-dl -g ' . shellescape(getline('.')) . ')' <CR><CR>
-"}}}
-" SCREEN MOVEMENT {{{
-" mapping to make movements operate on 1 screen line in wrap mode
-"function! ScreenMovement(movement)
-   "if &wrap
-      "return "g" . a:movement
-   "else
-      "return a:movement
-   "endif
-"endfunction
-"
-"onoremap <silent> <expr> j ScreenMovement("j")
-"onoremap <silent> <expr> k ScreenMovement("k")
-"onoremap <silent> <expr> 0 ScreenMovement("0")
-"onoremap <silent> <expr> ^ ScreenMovement("^")
-"onoremap <silent> <expr> $ ScreenMovement("$")
-"nnoremap <silent> <expr> j ScreenMovement("j")
-"nnoremap <silent> <expr> k ScreenMovement("k")
-"nnoremap <silent> <expr> 0 ScreenMovement("0")
-"nnoremap <silent> <expr> ^ ScreenMovement("^")
-"nnoremap <silent> <expr> $ ScreenMovement("$")
+" nnoremap <C-n> :NERDTreeToggle<CR>
+" nnoremap <C-t> :TagbarToggle<CR>
+" nnoremap <C-e> :UndotreeToggle<CR>
+" nnoremap <C-w> :call asyncrun#quickfix_toggle(8)<CR>
+" nnoremap <C-r> :AsyncRun ctags -R .<CR>
+" nnoremap <C-t> :set nosplitright<CR>:TagbarToggle<CR>:set splitright<CR>
 "}}}
 " NERDTREE {{{
 " Tweaks for browsing
-let g:netrw_banner=0        " disable annoying banner
-let g:netrw_browse_split=4  " open in prior window
-let g:netrw_altv=1          " open splits to the right
-let g:netrw_liststyle=3     " tree view
-let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
-
-
-let g:NERDTreeMinimalUI = 1
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
-let g:NERDTreeChDirMode=2
-let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
-let g:NERDTreeShowBookmarks=1
-let g:nerdtree_tabs_focus_on_files=1
-let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let g:NERDTreeWinSize = 50
+" let g:netrw_banner=0        " disable annoying banner
+" let g:netrw_browse_split=4  " open in prior window
+" let g:netrw_altv=1          " open splits to the right
+" let g:netrw_liststyle=3     " tree view
+" let g:netrw_list_hide=netrw_gitignore#Hide()
+" let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+" 
+" let g:NERDTreeMinimalUI = 1
+" let g:NERDTreeDirArrowExpandable = '▸'
+" let g:NERDTreeDirArrowCollapsible = '▾'
+" let g:NERDTreeChDirMode=2
+" let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
+" let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
+" let g:NERDTreeShowBookmarks=1
+" let g:nerdtree_tabs_focus_on_files=1
+" let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
+" let g:NERDTreeWinSize = 50
 " }}}
 " AUTO-PAIRS {{{
 let g:AutoPairsCenterLine=1
@@ -404,29 +351,8 @@ let g:AutoPairsFlyMode=0
 " ALE {{{
 let g:ale_python_flake8_options = '--ignore=E129,E501,E302,E265,E241,E305,E402,W503'
 let g:ale_python_pylint_options = '-j 0 --max-line-length=120'
-
-let g:ale_list_window_size = 6
-let g:ale_sign_column_always = 0
-let g:ale_open_list = 1
-let g:ale_keep_list_window_open = 1
-
-" Options are in .pylintrc!
-highlight VertSplit ctermbg=253
-
-highlight ALEWarning cterm=underline
-highlight ALEError cterm=underline
-"highlight ALEWarning ctermfg=Yellow cterm=underline
-"highlight ALEError ctermfg=Red cterm=underline
-
-
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_save = 1
-
 let g:ale_linters = {
-\'python': 'all',
+\'python': 'pylint',
 \'bib': 'all',
 \'bash': 'all',
 \'sh': 'all',
@@ -443,76 +369,87 @@ let g:ale_fixers = {
 \'sh': 'shfmt',
 \}
 
-nmap <silent> <C-M> <Plug>(ale_previous_wrap)
-nmap <silent> <C-m> <Plug>(ale_next_wrap)
-
+let g:ale_list_window_size = 6
+let g:ale_sign_column_always = 0
+let g:ale_open_list = 1
+let g:ale_keep_list_window_open = 1
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
 let g:ale_completion_enabled=0
 
+" Options are in .pylintrc!
+highlight VertSplit ctermbg=253
+highlight ALEWarning cterm=underline
+highlight ALEError cterm=underline
+"highlight ALEWarning ctermfg=Yellow cterm=underline
+"highlight ALEError ctermfg=Red cterm=underline
+
+nmap <silent> <C-M> <Plug>(ale_previous_wrap)
+nmap <silent> <C-m> <Plug>(ale_next_wrap)
 "}}}
 " JEDI {{{
-let g:jedi#auto_initialization = 1
-
-let g:jedi#completions_enabled = 0
-let g:jedi#popup_on_dot = 0
-
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#smart_auto_mappings = 0
-let g:jedi#show_call_signatures = "1"
-let g:jedi#show_call_signatures_delay = 0
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#show_call_signatures_modes = 'i'  " ni = also in normal mode
-let g:jedi#enable_speed_debugging=0
-
-let g:jedi#goto_command = "<leader>d"
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = "<leader>v"
-let g:jedi#documentation_command = "<leader>c"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#completions_command = "C-Space"
-let g:jedi#rename_command = "<leader>r"
+" let g:jedi#auto_initialization = 1
+" let g:jedi#completions_enabled = 0
+" let g:jedi#popup_on_dot = 1
+" let g:jedi#auto_vim_configuration = 0
+" let g:jedi#smart_auto_mappings = 0
+" let g:jedi#show_call_signatures = "1"
+" let g:jedi#show_call_signatures_delay = 0
+" let g:jedi#use_tabs_not_buffers = 0
+" let g:jedi#show_call_signatures_modes = 'i'  " ni = also in normal mode
+" let g:jedi#enable_speed_debugging=0
+" 
+" let g:jedi#goto_command = "<leader>d"
+" let g:jedi#goto_assignments_command = "<leader>g"
+" let g:jedi#goto_definitions_command = "<leader>v"
+" let g:jedi#documentation_command = "<leader>c"
+" let g:jedi#usages_command = "<leader>n"
+" let g:jedi#completions_command = "C-Space"
+" let g:jedi#rename_command = "<leader>r"
 "}}}
 " COMPLETION {{{
-if executable('pyls')
-    " pip install python-language-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
+" if executable('pyls')
+"     " pip install python-language-server
+"     au User lsp_setup call lsp#register_server({
+"         \ 'name': 'pyls',
+"         \ 'cmd': {server_info->['pyls']},
+"         \ 'whitelist': ['python'],
+"         \ })
+" endif
 
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'whitelist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
-    \ 'name': 'omni',
-    \ 'whitelist': ['*'],
-    \ 'blacklist': ['python'],
-    \ 'completor': function('asyncomplete#sources#omni#completor')
-    \  }))
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necosyntax#get_source_options({
-    \ 'name': 'necosyntax',
-    \ 'whitelist': ['*'],
-    \ 'completor': function('asyncomplete#sources#necosyntax#completor'),
-    \ }))
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
-    \ 'name': 'tags',
-    \ 'whitelist': ['c'],
-    \ 'completor': function('asyncomplete#sources#tags#completor'),
-    \ 'config': {
-    \    'max_file_size': 50000000,
-    \  },
-    \ }))
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necovim#get_source_options({
-    \ 'name': 'necovim',
-    \ 'whitelist': ['vim'],
-    \ 'completor': function('asyncomplete#sources#necovim#completor'),
-    \ }))
-
-
+" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+"     \ 'name': 'file',
+"     \ 'whitelist': ['*'],
+"     \ 'priority': 10,
+"     \ 'completor': function('asyncomplete#sources#file#completor')
+"     \ }))
+" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+"     \ 'name': 'omni',
+"     \ 'whitelist': ['*'],
+"     \ 'blacklist': ['python'],
+"     \ 'completor': function('asyncomplete#sources#omni#completor')
+"     \  }))
+" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necosyntax#get_source_options({
+"     \ 'name': 'necosyntax',
+"     \ 'whitelist': ['*'],
+"     \ 'completor': function('asyncomplete#sources#necosyntax#completor'),
+"     \ }))
+" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
+"     \ 'name': 'tags',
+"     \ 'whitelist': ['c'],
+"     \ 'completor': function('asyncomplete#sources#tags#completor'),
+"     \ 'config': {
+"     \    'max_file_size': 50000000,
+"     \  },
+"     \ }))
+" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necovim#get_source_options({
+"     \ 'name': 'necovim',
+"     \ 'whitelist': ['vim'],
+"     \ 'completor': function('asyncomplete#sources#necovim#completor'),
+"     \ }))
 
 
 set omnifunc=syntaxcomplete#Complete
@@ -529,22 +466,20 @@ set completeopt+=noinsert
 " let g:SuperTabDefaultCompletionType="<C-X><C-O>"
 "let g:SuperTabDefaultCompletionType="context"
 
+"let g:asyncomplete_auto_popup = 0
 
-let g:asyncomplete_auto_popup = 0
+"function! s:check_back_space() abort
+"    let col = col('.') - 1
+"    return !col || getline('.')[col - 1]  =~ '\s'
+"endfunction
 
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-" to do text select via j/k
-inoremap <expr> j     ((pumvisible())?("\<C-n>"):("j"))
-inoremap <expr> k     ((pumvisible())?("\<C-p>"):("k"))
-inoremap <expr> <cr>  ((pumvisible())?("\<C-y>"):("<cr>"))
-inoremap <silent><expr> <TAB>  (pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : asyncomplete#force_refresh())
-"inoremap <expr> <S-TAB> ((pumvisible())?("\<C-p>"):("\<C-h>"))
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
+"" to do text select via j/k
+"inoremap <expr> j     ((pumvisible())?("\<C-n>"):("j"))
+"inoremap <expr> k     ((pumvisible())?("\<C-p>"):("k"))
+"inoremap <expr> <cr>  ((pumvisible())?("\<C-y>"):("<cr>"))
+"inoremap <silent><expr> <TAB>  (pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : asyncomplete#force_refresh())
+""inoremap <expr> <S-TAB> ((pumvisible())?("\<C-p>"):("\<C-h>"))
+"autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 "}}}
 " SimpylFold {{{
 let g:SimpylFold_docstring_preview=1
@@ -555,62 +490,67 @@ hi pythonImportedObject ctermfg=127
 hi pythonImportedFuncDef ctermfg=127
 hi pythonImportedClassDef ctermfg=127
 "}}}
-" GITGUTTER {{{
-let g:gitgutter_override_sign_column_highlight = 0
-let g:gitgutter_map_keys = 0
-"}}}
 " PIPENV {{{
 " let g:pipenv_auto_activate=1
 "}}}
 " ASYNCRUN {{{
 let g:asyncrun_mode=0
-let g:asyncrun_open = 3
+let g:asyncrun_open=3
 "}}}
-" RUN FUNC {{{
-nnoremap <leader>r :call <SID>compile_and_run()<CR>
-" command R :call Runit()
-
-
-let pipenv_venv_path = system('pipenv --venv')
-if shell_error == 0
-  let venv_path = substitute(pipenv_venv_path, '\n', '', '')
-  let g:python3_host_prog = pipenv_venv_path . '/bin/python3.5'
-  let g:python_host_prog = pipenv_venv_path . '/bin/python'
-else
-  let g:python3_host_prog = '/usr/bin/python3.5'
-  let g:python_host_prog = '/usr/bin/python2'
+" COLORSCHEME {{{
+if has('termguicolors')
+	set termguicolors
 endif
 
+let g:sonokai_style = 'default'
+let g:sonokai_enable_italic = 1
+let g:sonokai_disable_italic_comment = 1
 
-
-function! s:compile_and_run()
-    exec 'w'
-    if &filetype == 'c'
-        exec "AsyncRun! gcc % -o %<; time ./%<"
-    elseif &filetype == 'cpp'
-       exec "AsyncRun! g++ -std=c++11 % -o %<; time ./%<"
-    elseif &filetype == 'java'
-       exec "AsyncRun! javac %; time java %<"
-    elseif &filetype == 'sh'
-       exec "! time bash %"
-    elseif &filetype == 'python'
-       exec "AsyncRun! time python3.5 %"
-    elseif &filetype == 'ruby'
-       exec "AsyncRun! time ruby %"
-    elseif &filetype == 'javascript'
-       exec "AsyncRun! time node %"
-    elseif &filetype == 'lua'
-       exec "AsyncRun! time lua %"
-    elseif &filetype == 'coffee'
-       exec "AsyncRun! time coffee %"
-    elseif &filetype == 'php'
-       exec "AsyncRun! time php %"
-    elseif &filetype == 'tex'
-       exec "AsyncRun! time latexmk -pvc -pdf %"
-    endif
-endfunction
+colorscheme sonokai
+" }}}
+" RUN FUNC {{{
+" nnoremap <leader>r :call <SID>compile_and_run()<CR>
+" " command R :call Runit()
+" 
+" let pipenv_venv_path = system('pipenv --venv')
+" if shell_error == 0
+"   let venv_path = substitute(pipenv_venv_path, '\n', '', '')
+"   let g:python3_host_prog = pipenv_venv_path . '/bin/python3.5'
+"   let g:python_host_prog = pipenv_venv_path . '/bin/python'
+" else
+"   let g:python3_host_prog = '/usr/bin/python3.5'
+"   let g:python_host_prog = '/usr/bin/python2'
+" endif
+" 
+" function! s:compile_and_run()
+"     exec 'w'
+"     if &filetype == 'c'
+"         exec "AsyncRun! gcc % -o %<; time ./%<"
+"     elseif &filetype == 'cpp'
+"        exec "AsyncRun! g++ -std=c++11 % -o %<; time ./%<"
+"     elseif &filetype == 'java'
+"        exec "AsyncRun! javac %; time java %<"
+"     elseif &filetype == 'sh'
+"        exec "! time bash %"
+"     elseif &filetype == 'python'
+"        exec "AsyncRun! time python3.5 %"
+"     elseif &filetype == 'ruby'
+"        exec "AsyncRun! time ruby %"
+"     elseif &filetype == 'javascript'
+"        exec "AsyncRun! time node %"
+"     elseif &filetype == 'lua'
+"        exec "AsyncRun! time lua %"
+"     elseif &filetype == 'coffee'
+"        exec "AsyncRun! time coffee %"
+"     elseif &filetype == 'php'
+"        exec "AsyncRun! time php %"
+"     elseif &filetype == 'tex'
+"        exec "AsyncRun! time latexmk -pvc -pdf %"
+"     endif
+" endfunction
 "}}}
 
+let g:ycm_python_binary_path = '/usr/bin/python3'
 
 " highlight python and self function
 autocmd BufEnter * syntax match Type /\v\.[a-zA-Z0-9_]+\ze(\[|\s|$|,|\]|\)|\.|:)/hs=s+1
