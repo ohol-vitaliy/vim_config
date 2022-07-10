@@ -20,25 +20,18 @@ endif
 
 " PLUGINS {{{
 call plug#begin('~/.vim/plugged')
-" Plug 'skywind3000/asyncrun.vim'
-" Plug 'scrooloose/nerdtree'  " file list
-" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'  "to highlight files in nerdtree
-" Plug 'majutsushi/tagbar'  " show tags in a bar (functions etc) for easy browsing
-" Plug 'mbbill/undotree'
+Plug 'skywind3000/asyncrun.vim'
 Plug 'Konfekt/FastFold'  " fast folding
 " Plug 'godlygeek/tabular'
 Plug 'kana/vim-surround'
-Plug 'jiangmiao/auto-pairs' " , {'on': 'PAIRSToggle'}
-Plug 'w0rp/ale' " , { 'on':  'ALEToggle'  }
+Plug 'jiangmiao/auto-pairs'  ", { 'on': 'PAIRSToggle' }
+Plug 'w0rp/ale', { 'on': 'ALEToggle' }
 Plug 'mattn/emmet-vim'
 Plug 'sheerun/vim-polyglot'
-Plug 'ycm-core/YouCompleteMe'
-" Plug 'rhysd/vim-grammarous'
-" Plug 'junegunn/goyo.vim'
-" Plug 'gabrielelana/vim-markdown'
-" Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+" Plug 'ycm-core/YouCompleteMe', {'on': 'YCMToggle'}
 " COMPLETION {{{
-Plug 'ervandew/supertab'  " for autocompletion using <TAB>
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'ervandew/supertab'  " for autocompletion using <TAB>
 "Plug 'Shougo/neco-syntax'
 "Plug 'Shougo/neco-vim'
 "Plug 'prabirshrestha/asyncomplete.vim'
@@ -51,24 +44,28 @@ Plug 'ervandew/supertab'  " for autocompletion using <TAB>
 "Plug 'prabirshrestha/asyncomplete-tags.vim'
 "Plug 'prabirshrestha/asyncomplete-necovim.vim'
 " }}}
+" JS {{{
+Plug 'pangloss/vim-javascript', {'for': 'javascript' }
+Plug 'mxw/vim-jsx', {'for': 'javascript' }
+Plug 'pangloss/vim-javascript', {'for': 'javascript' }
+Plug 'leafgarland/typescript-vim', {'for': 'javascript' }
+Plug 'peitalin/vim-jsx-typescript', {'for': 'javascript' }
+Plug 'styled-components/vim-styled-components', { 'branch': 'main', 'for': ['javascript','typescript','css','html'] }
+" }}}
 " PYTHON {{{
 " Plug 'davidhalter/jedi-vim', {'for': 'python'}   " jedi for python
-" Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}  "better indenting for python
 Plug 'tmhedberg/SimpylFold', {'for': 'python'}  " for nice python folding
-" Plug 'tweekmonster/impsort.vim', {'for': 'python'}  " color and sort imports
-"Plug 'plytophogy/vim-virtualenv', {'for': 'python'} " virtualenv support
-"Plug 'PieterjanMontens/vim-pipenv', {'for': 'python'}
+Plug 'tweekmonster/impsort.vim', {'for': 'python'}  " color and sort imports
 " }}}
 " GIT {{{
 " Plug 'airblade/vim-gitgutter'  " show git changes to files in gutter
 Plug 'tpope/vim-fugitive'
 " }}}
-" NOT NOW{{{
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'  "comment-out by gc
 Plug 'sainnhe/sonokai'
-" }}}
+Plug 'rakr/vim-one'
 call plug#end()
 " }}}
 
@@ -210,17 +207,23 @@ autocmd FileType html,xhtml,xml,haml,jst normal zR
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " Disable comment new line
 
+" autocmd BufWritePost *.js,*.jsx AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
 autocmd BufWritePost *Xresources,*Xdefaults !xrdb %
 autocmd BufWritePost *aliasrc,*bashrc,*bash_prompt !source %
 " autocmd BufWritePost *vimrc :source % " take to much time to reload
 autocmd BufWritePost *tmux.conf !tmux source-file %
-
 
 "autocmd FileType cpp,java setlocal equalprg=astyle\ -A1sCSNLYpHUEk1xjcn
 autocmd FileType python setlocal makeprg=pylint
 autocmd FileType python setlocal formatprg=autopep8\ -
 "autocmd FileType c setlocal commentstring=//\ %s
 "autocmd FileType cpp setlocal commentstring=//\ %s
+
+autocmd BufEnter * syntax match Type /\v\.[a-zA-Z0-9_]+\ze(\[|\s|$|,|\]|\)|\.|:)/hs=s+1
+autocmd BufEnter * syntax match pythonFunction /\v[[:alnum:]_]+\ze(\s?\()/
+hi def link pythonFunction Function
+autocmd BufEnter * syn match Self "\(\W\|^\)\@<=self\(\.\)\@="
+highlight self ctermfg=239
 "}}}
 " KEYMAPPING {{{
 nnoremap <bs> <nop>
@@ -343,16 +346,153 @@ nnoremap <leader>bb :buffers<cr>:buffer
 " let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 " let g:NERDTreeWinSize = 50
 " }}}
+" COC {{{
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ CheckBackspace() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" augroup mygroup
+"   autocmd!
+"   " Setup formatexpr specified filetype(s).
+"   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+"   " Update signature help on jump placeholder.
+"   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+" augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Run the Code Lens action on the current line.
+nmap <leader>cl  <Plug>(coc-codelens-action)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+" if has('nvim-0.4.0') || has('patch-8.2.0750')
+"   nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+"   nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+"   inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+"   inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+"   vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+"   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+" endif
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocActionAsync('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <leader>d  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <leader>e  :<C-u>CocList extensions<cr>
+" Show commands.
+" nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <leader>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+" nnoremap <silent><nowait> <leader>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+" nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+" nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+" nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+" }}}
 " AUTO-PAIRS {{{
 let g:AutoPairsCenterLine=1
 let g:AutoPairsMapSpace=1
 let g:AutoPairsFlyMode=0
 "}}}
 " ALE {{{
-let g:ale_python_flake8_options = '--ignore=E129,E501,E302,E265,E241,E305,E402,W503'
 let g:ale_python_pylint_options = '-j 0 --max-line-length=120'
 let g:ale_linters = {
-\'python': 'pylint',
+\'python': ['mypy', 'pylint'],
 \'bib': 'all',
 \'bash': 'all',
 \'sh': 'all',
@@ -360,19 +500,21 @@ let g:ale_linters = {
 \'latex': 'all',
 \'tex': 'all',
 \'text': 'all',
-\'markdown': 'all'
+\'markdown': 'all',
+\'javascript': 'all'
 \}
 let g:ale_fixers = {
 \'*': ['remove_trailing_lines', 'trim_whitespace'],
 \'python': ['isort', 'autopep8', 'yapf', 'add_blank_lines_for_python_control_statements'],
 \'bash': 'shfmt',
 \'sh': 'shfmt',
+\'javascript': 'eslint'
 \}
 
 let g:ale_list_window_size = 6
 let g:ale_sign_column_always = 0
 let g:ale_open_list = 1
-let g:ale_keep_list_window_open = 1
+let g:ale_keep_list_window_open = 0
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
 let g:ale_lint_on_text_changed = 'never'
@@ -490,6 +632,10 @@ hi pythonImportedObject ctermfg=127
 hi pythonImportedFuncDef ctermfg=127
 hi pythonImportedClassDef ctermfg=127
 "}}}
+" EMMET {{{
+let g:user_emmet_leader_key=','
+let g:user_emmet_settings = { 'javascript.jsx' : { 'extends' : 'jsx', } }
+" }}}
 " PIPENV {{{
 " let g:pipenv_auto_activate=1
 "}}}
@@ -506,7 +652,11 @@ let g:sonokai_style = 'default'
 let g:sonokai_enable_italic = 1
 let g:sonokai_disable_italic_comment = 1
 
-colorscheme sonokai
+" colorscheme sonokai
+
+colorscheme one
+" set background=dark " for the dark version
+set background=light " for the light version
 " }}}
 " RUN FUNC {{{
 " nnoremap <leader>r :call <SID>compile_and_run()<CR>
@@ -550,16 +700,3 @@ colorscheme sonokai
 " endfunction
 "}}}
 
-let g:ycm_python_binary_path = '/usr/bin/python3'
-
-" highlight python and self function
-autocmd BufEnter * syntax match Type /\v\.[a-zA-Z0-9_]+\ze(\[|\s|$|,|\]|\)|\.|:)/hs=s+1
-autocmd BufEnter * syntax match pythonFunction /\v[[:alnum:]_]+\ze(\s?\()/
-hi def link pythonFunction Function
-autocmd BufEnter * syn match Self "\(\W\|^\)\@<=self\(\.\)\@="
-highlight self ctermfg=239
-
-" easy breakpoint python
-"au FileType python map <silent> <leader>b ofrom pudb import set_trace; set_trace()<esc>
-"au FileType python map <silent> <leader>j ofrom pdb import set_trace; set_trace()<esc>
-"au FileType python map <silent> <leader>j oif __name__ == "__main__":<CR>main()<esc>
