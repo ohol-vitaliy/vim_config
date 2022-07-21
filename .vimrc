@@ -20,31 +20,29 @@ endif
 
 " PLUGINS {{{
 call plug#begin('~/.vim/plugged')
-Plug 'skywind3000/asyncrun.vim'
+" Plug 'skywind3000/asyncrun.vim'
 Plug 'Konfekt/FastFold'  " fast folding
-" Plug 'godlygeek/tabular'
+Plug 'godlygeek/tabular'
 Plug 'kana/vim-surround'
 Plug 'jiangmiao/auto-pairs'  ", { 'on': 'PAIRSToggle' }
-Plug 'w0rp/ale', { 'on': 'ALEToggle' }
-Plug 'mattn/emmet-vim'
+Plug 'w0rp/ale'  ", { 'on': 'ALEToggle' }
 Plug 'sheerun/vim-polyglot'
-" Plug 'ycm-core/YouCompleteMe', {'on': 'YCMToggle'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+Plug 'xiyaowong/telescope-emoji.nvim'
+Plug 'fannheyward/telescope-coc.nvim'
+Plug 'tpope/vim-commentary'  "comment-out by gc
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Plug 'junegunn/fzf.vim'
+
 " COMPLETION {{{
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'ervandew/supertab'  " for autocompletion using <TAB>
-"Plug 'Shougo/neco-syntax'
-"Plug 'Shougo/neco-vim'
-"Plug 'prabirshrestha/asyncomplete.vim'
-"Plug 'prabirshrestha/async.vim'
-"Plug 'prabirshrestha/vim-lsp'
-"Plug 'prabirshrestha/asyncomplete-lsp.vim'
-"Plug 'prabirshrestha/asyncomplete-file.vim'
-"Plug 'yami-beta/asyncomplete-omni.vim'
-"Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
-"Plug 'prabirshrestha/asyncomplete-tags.vim'
-"Plug 'prabirshrestha/asyncomplete-necovim.vim'
+" Plug 'ycm-core/YouCompleteMe', {'on': 'YCMToggle'}
 " }}}
 " JS {{{
+Plug 'mattn/emmet-vim'
 Plug 'pangloss/vim-javascript', {'for': 'javascript' }
 Plug 'mxw/vim-jsx', {'for': 'javascript' }
 Plug 'pangloss/vim-javascript', {'for': 'javascript' }
@@ -55,20 +53,23 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main', 'for': ['jav
 " PYTHON {{{
 " Plug 'davidhalter/jedi-vim', {'for': 'python'}   " jedi for python
 Plug 'tmhedberg/SimpylFold', {'for': 'python'}  " for nice python folding
-Plug 'tweekmonster/impsort.vim', {'for': 'python'}  " color and sort imports
+" Plug 'tweekmonster/impsort.vim', {'for': 'python'}  " color and sort imports
 " }}}
 " GIT {{{
 " Plug 'airblade/vim-gitgutter'  " show git changes to files in gutter
 Plug 'tpope/vim-fugitive'
 " }}}
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-commentary'  "comment-out by gc
+" Markdown {{{
+Plug 'preservim/vim-markdown', { 'for': 'markdown' }
+" }}}
+" Theme {{{
 Plug 'sainnhe/sonokai'
 Plug 'rakr/vim-one'
+" }}}
 call plug#end()
 " }}}
 
+" SETTINGS {{{
 let g:is_bash=1
 set shell=$SHELL
 if &compatible
@@ -109,6 +110,7 @@ set pastetoggle=<F2>
 set path+=**
 set shortmess=atI
 set showcmd showmode
+set cmdheight=2
 set showmatch
 set spelllang=en,ru,pl,ua
 set synmaxcol=800
@@ -116,7 +118,7 @@ set tags=tags;/,codex.tags;/ " look for tags in current dir and up and
 set ts=4 sts=4 sw=4 noexpandtab smarttab
 set ttimeoutlen=0
 set undolevels=1000
-set updatetime=500
+set updatetime=300
 
 if !&scrolloff
   set scrolloff=3       " Show next 3 lines while scrolling.
@@ -138,7 +140,7 @@ set cursorline nocursorcolumn
 
 set sessionoptions=blank,buffers,curdir,folds,help,localoptions,tabpages,winsize
 set switchbuf=useopen,usetab
-
+" }}}
 
 " STATUSLINE {{{
 function! LinterStatus() abort
@@ -186,7 +188,7 @@ set wildignore+=log/**
 set wildignore+=tmp/**,*/tmp/*
 "}}}
 " AUTOCMD {{{
-autocmd FileType python,javascript setlocal ts=4 sw=4 sts=4 expandtab autoindent
+autocmd FileType python,javascript,typescript,json setlocal ts=4 sw=4 sts=4 expandtab autoindent
 autocmd FileType php,snippets setlocal ts=4 sw=4 sts=4 noexpandtab
 autocmd FileType html,xhtml setlocal ts=2 sts=2 sw=2
 autocmd FileType make setlocal ts=4 sts=2 sw=2 noexpandtab
@@ -196,10 +198,10 @@ autocmd FileType vim setlocal foldmarker={{{,}}}
 autocmd FileType vim setlocal foldlevel=1
 autocmd FileType vim normal zM
 
-autocmd FileType c,cpp,java,javascript,css,php,conf setlocal foldmethod=marker
-autocmd FileType c,cpp,java,javascript,css,php,conf setlocal foldmarker={,}
-autocmd FileType c,cpp,java,javascript,css,php,conf setlocal foldlevel=1
-autocmd FileType c,cpp,java,javascript,css,php,conf normal zM
+autocmd FileType c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmethod=marker
+autocmd FileType c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmarker={,}
+autocmd FileType c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldlevel=1
+autocmd FileType c,cpp,java,javascript,typescript,json,css,php,conf normal zM
 
 autocmd FileType html,xhtml,xml,haml,jst setlocal foldmethod=indent
 autocmd FileType html,xhtml,xml,haml,hst setlocal foldlevel=20
@@ -224,6 +226,11 @@ autocmd BufEnter * syntax match pythonFunction /\v[[:alnum:]_]+\ze(\s?\()/
 hi def link pythonFunction Function
 autocmd BufEnter * syn match Self "\(\W\|^\)\@<=self\(\.\)\@="
 highlight self ctermfg=239
+
+au BufNewFile,BufRead *.ts setlocal filetype=typescript
+au BufNewFile,BufRead *.tsx setlocal filetype=typescript.tsx
+au BufNewFile,BufRead *.js setlocal filetype=javascript
+au BufNewFile,BufRead *.jsx setlocal filetype=javascript.jsx
 "}}}
 " KEYMAPPING {{{
 nnoremap <bs> <nop>
@@ -319,34 +326,65 @@ nnoremap <leader>bd :bdelete<cr>
 nnoremap <leader>bb :buffers<cr>:buffer
 "}}}
 " PLUGIN KEYBINDS {{{
-" nnoremap <C-n> :NERDTreeToggle<CR>
-" nnoremap <C-t> :TagbarToggle<CR>
-" nnoremap <C-e> :UndotreeToggle<CR>
-" nnoremap <C-w> :call asyncrun#quickfix_toggle(8)<CR>
 " nnoremap <C-r> :AsyncRun ctags -R .<CR>
-" nnoremap <C-t> :set nosplitright<CR>:TagbarToggle<CR>:set splitright<CR>
+nnoremap <leader>. :GFiles<CR>
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fe <cmd>Telescope emoji<cr>
+
+nnoremap <leader>gd <cmd>Telescope coc definitions<cr>
+nnoremap <leader>gt <cmd>Telescope coc type_definitions<cr>
+nnoremap <leader>gi <cmd>Telescope coc implementations<cr>
+nnoremap <leader>gr <cmd>Telescope coc references<cr>
+nnoremap <leader>gr <cmd>Telescope coc references<cr>
+
+nnoremap <leader>aa <cmd>Telescope coc line_code_action<cr>
+nnoremap <leader>ac <cmd>Telescope coc file_code_action<cr>
+
+nnoremap <leader>d <cmd>Telescope coc diagnostics<cr>
+nnoremap <leader>cc <cmd>Telescope coc commands<cr>
+nnoremap <leader>o <cmd>Telescope coc document_symbols<cr>
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
 "}}}
-" NERDTREE {{{
-" Tweaks for browsing
-" let g:netrw_banner=0        " disable annoying banner
-" let g:netrw_browse_split=4  " open in prior window
-" let g:netrw_altv=1          " open splits to the right
-" let g:netrw_liststyle=3     " tree view
-" let g:netrw_list_hide=netrw_gitignore#Hide()
-" let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
-" 
-" let g:NERDTreeMinimalUI = 1
-" let g:NERDTreeDirArrowExpandable = '▸'
-" let g:NERDTreeDirArrowCollapsible = '▾'
-" let g:NERDTreeChDirMode=2
-" let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-" let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
-" let g:NERDTreeShowBookmarks=1
-" let g:nerdtree_tabs_focus_on_files=1
-" let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-" let g:NERDTreeWinSize = 50
-" }}}
 " COC {{{
+let g:coc_disable_startup_warning = 1
+let g:coc_global_extensions = [
+			\ 'coc-calc',
+			\ 'coc-cmake',
+			\ 'coc-css',
+			\ 'coc-cssmodules',
+			\ 'coc-docker',
+			\ 'coc-emmet',
+			\ 'coc-eslint',
+			\ 'coc-highlight',
+			\ 'coc-html',
+			\ 'coc-html-css-support',
+			\ 'coc-json',
+			\ 'coc-lightbulb',
+			\ 'coc-lists',
+			\ 'coc-yank',
+			\ 'coc-prettier',
+			\ 'coc-sh',
+			\ 'coc-sql',
+			\ 'coc-svg',
+			\ 'coc-tsserver',
+			\ 'coc-vimlsp',
+			\ 'coc-yaml',
+			\ 'coc-rome',
+			\ 'coc-symbol-line',
+			\ 'coc-tailwindcss',
+			\ 'coc-jedi',
+			\ 'coc-pyright',
+			\ ]
+" \ '@yaegassy/coc-pylsp'
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
@@ -375,14 +413,9 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" nmap <silent> [g <Plug>(coc-diagnostic-prev)
+" nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call ShowDocumentation()<CR>
@@ -398,44 +431,25 @@ endfunction
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
 
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-" augroup mygroup
-"   autocmd!
-"   " Setup formatexpr specified filetype(s).
-"   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-"   " Update signature help on jump placeholder.
-"   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-" augroup end
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Run the Code Lens action on the current line.
-nmap <leader>cl  <Plug>(coc-codelens-action)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
+" xmap if <Plug>(coc-funcobj-i)
+" omap if <Plug>(coc-funcobj-i)
+" xmap af <Plug>(coc-funcobj-a)
+" omap af <Plug>(coc-funcobj-a)
+" xmap ic <Plug>(coc-classobj-i)
+" omap ic <Plug>(coc-classobj-i)
+" xmap ac <Plug>(coc-classobj-a)
+" omap ac <Plug>(coc-classobj-a)
 
 " Remap <C-f> and <C-b> for scroll float windows/popups.
 " if has('nvim-0.4.0') || has('patch-8.2.0750')
@@ -449,40 +463,25 @@ omap ac <Plug>(coc-classobj-a)
 
 " Use CTRL-S for selections ranges.
 " Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
+" nmap <silent> <C-s> <Plug>(coc-range-select)
+" xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocActionAsync('format')
+autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx,*json,*.html,*.css :Format
 
 " Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
+" autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx :OR
 
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+set statusline^=%{coc#status()}\ %{get(b:,'coc_current_function','')}\ 
 
-" Mappings for CoCList
-" Show all diagnostics.
-nnoremap <silent><nowait> <leader>d  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent><nowait> <leader>e  :<C-u>CocList extensions<cr>
-" Show commands.
-" nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent><nowait> <leader>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-" nnoremap <silent><nowait> <leader>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-" nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-" nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-" nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 " }}}
 " AUTO-PAIRS {{{
 let g:AutoPairsCenterLine=1
@@ -529,20 +528,28 @@ highlight ALEError cterm=underline
 "highlight ALEWarning ctermfg=Yellow cterm=underline
 "highlight ALEError ctermfg=Red cterm=underline
 
-nmap <silent> <C-M> <Plug>(ale_previous_wrap)
-nmap <silent> <C-m> <Plug>(ale_next_wrap)
+" nmap <silent> <C-M> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-m> <Plug>(ale_next_wrap)
 "}}}
+" MARKDOWN {{{
+let g:vim_markdown_follow_anchor = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_no_extensions_in_markdown = 1
+let g:vim_markdown_folding_disabled = 1
+" }}}
 " JEDI {{{
-" let g:jedi#auto_initialization = 1
-" let g:jedi#completions_enabled = 0
-" let g:jedi#popup_on_dot = 1
-" let g:jedi#auto_vim_configuration = 0
-" let g:jedi#smart_auto_mappings = 0
-" let g:jedi#show_call_signatures = "1"
-" let g:jedi#show_call_signatures_delay = 0
-" let g:jedi#use_tabs_not_buffers = 0
-" let g:jedi#show_call_signatures_modes = 'i'  " ni = also in normal mode
-" let g:jedi#enable_speed_debugging=0
+let g:python_host_prog= '/usr/bin/python'
+let g:python3_host_prog= '/usr/bin/python3.8'
+let g:jedi#auto_initialization = 1
+let g:jedi#completions_enabled = 1
+let g:jedi#popup_on_dot = 1
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#smart_auto_mappings = 0
+let g:jedi#show_call_signatures = "1"
+let g:jedi#show_call_signatures_delay = 0
+let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#show_call_signatures_modes = 'ni'
+ let g:jedi#enable_speed_debugging=0
 " 
 " let g:jedi#goto_command = "<leader>d"
 " let g:jedi#goto_assignments_command = "<leader>g"
@@ -553,47 +560,6 @@ nmap <silent> <C-m> <Plug>(ale_next_wrap)
 " let g:jedi#rename_command = "<leader>r"
 "}}}
 " COMPLETION {{{
-" if executable('pyls')
-"     " pip install python-language-server
-"     au User lsp_setup call lsp#register_server({
-"         \ 'name': 'pyls',
-"         \ 'cmd': {server_info->['pyls']},
-"         \ 'whitelist': ['python'],
-"         \ })
-" endif
-
-" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-"     \ 'name': 'file',
-"     \ 'whitelist': ['*'],
-"     \ 'priority': 10,
-"     \ 'completor': function('asyncomplete#sources#file#completor')
-"     \ }))
-" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
-"     \ 'name': 'omni',
-"     \ 'whitelist': ['*'],
-"     \ 'blacklist': ['python'],
-"     \ 'completor': function('asyncomplete#sources#omni#completor')
-"     \  }))
-" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necosyntax#get_source_options({
-"     \ 'name': 'necosyntax',
-"     \ 'whitelist': ['*'],
-"     \ 'completor': function('asyncomplete#sources#necosyntax#completor'),
-"     \ }))
-" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
-"     \ 'name': 'tags',
-"     \ 'whitelist': ['c'],
-"     \ 'completor': function('asyncomplete#sources#tags#completor'),
-"     \ 'config': {
-"     \    'max_file_size': 50000000,
-"     \  },
-"     \ }))
-" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necovim#get_source_options({
-"     \ 'name': 'necovim',
-"     \ 'whitelist': ['vim'],
-"     \ 'completor': function('asyncomplete#sources#necovim#completor'),
-"     \ }))
-
-
 set omnifunc=syntaxcomplete#Complete
 "au FileType python set omnifunc=pythoncomplete#Complete
 "autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
@@ -603,7 +569,6 @@ set omnifunc=syntaxcomplete#Complete
 set completeopt+=preview
 set completeopt+=menuone
 set completeopt+=noinsert
-
 
 " let g:SuperTabDefaultCompletionType="<C-X><C-O>"
 "let g:SuperTabDefaultCompletionType="context"
@@ -627,18 +592,10 @@ set completeopt+=noinsert
 let g:SimpylFold_docstring_preview=1
 let g:SimpylFold_fold_import=1
 "}}}
-" IMPSORT {{{
-hi pythonImportedObject ctermfg=127
-hi pythonImportedFuncDef ctermfg=127
-hi pythonImportedClassDef ctermfg=127
-"}}}
 " EMMET {{{
 let g:user_emmet_leader_key=','
 let g:user_emmet_settings = { 'javascript.jsx' : { 'extends' : 'jsx', } }
 " }}}
-" PIPENV {{{
-" let g:pipenv_auto_activate=1
-"}}}
 " ASYNCRUN {{{
 let g:asyncrun_mode=0
 let g:asyncrun_open=3
@@ -652,11 +609,11 @@ let g:sonokai_style = 'default'
 let g:sonokai_enable_italic = 1
 let g:sonokai_disable_italic_comment = 1
 
-" colorscheme sonokai
+colorscheme sonokai
 
-colorscheme one
+" colorscheme one
 " set background=dark " for the dark version
-set background=light " for the light version
+" set background=light " for the light version
 " }}}
 " RUN FUNC {{{
 " nnoremap <leader>r :call <SID>compile_and_run()<CR>
