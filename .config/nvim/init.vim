@@ -44,5 +44,7 @@ require("telescope").setup({
 require("telescope").load_extension("emoji")
 require('telescope').load_extension('coc')
 
+require("nvim-tree").setup()
+
 EOF
 

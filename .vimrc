@@ -33,8 +33,21 @@ Plug 'xiyaowong/telescope-emoji.nvim'
 Plug 'fannheyward/telescope-coc.nvim'
 Plug 'tpope/vim-commentary'  "comment-out by gc
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'kyazdani42/nvim-web-devicons' " optional, for file icons
+Plug 'kyazdani42/nvim-tree.lua'
 " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Plug 'junegunn/fzf.vim'
+if has('nvim')
+  function! UpdateRemotePlugins(...)
+    " Needed to refresh runtime files
+    let &rtp=&rtp
+    UpdateRemotePlugins
+  endfunction
+
+  Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
+else
+  Plug 'gelguy/wilder.nvim'
+endif
 
 " COMPLETION {{{
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -327,7 +340,8 @@ nnoremap <leader>bb :buffers<cr>:buffer
 "}}}
 " PLUGIN KEYBINDS {{{
 " nnoremap <C-r> :AsyncRun ctags -R .<CR>
-nnoremap <leader>. :GFiles<CR>
+nnoremap <leader>. :GFiles<cr>
+nnoremap <leader>n :NvimTreeFocus<cr>
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -600,6 +614,37 @@ let g:user_emmet_settings = { 'javascript.jsx' : { 'extends' : 'jsx', } }
 let g:asyncrun_mode=0
 let g:asyncrun_open=3
 "}}}
+" Wilder {{{
+call wilder#setup({'modes': [':', '/', '?']})
+call wilder#set_option('pipeline', [
+      \   wilder#branch(
+      \     wilder#python_file_finder_pipeline({
+      \       'file_command': ['find', '.', '-type', 'f', '-printf', '%P\n'],
+      \       'dir_command': ['find', '.', '-type', 'd', '-printf', '%P\n'],
+      \       'filters': ['fuzzy_filter', 'difflib_sorter'],
+      \     }),
+      \     wilder#cmdline_pipeline(),
+      \     wilder#python_search_pipeline(),
+      \   ),
+      \ ])
+call wilder#set_option('renderer', wilder#popupmenu_renderer(wilder#popupmenu_border_theme({
+      \ 'highlighter': wilder#basic_highlighter(),
+      \ 'min_width': '100%',
+      \ 'min_height': '50%',
+      \ 'reverse': 0,
+      \ 'pumblend': 20,
+      \ 'left': [
+      \   ' ', wilder#popupmenu_devicons(),
+      \ ],
+      \ 'right': [
+      \   ' ', wilder#popupmenu_scrollbar(),
+      \ ],
+      \ 'highlights': {
+      \   'border': 'Normal',
+      \ },
+      \ 'border': 'rounded',
+      \ })))
+" }}}
 " COLORSCHEME {{{
 if has('termguicolors')
 	set termguicolors
