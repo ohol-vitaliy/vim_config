@@ -33,7 +33,7 @@ Plug 'xiyaowong/telescope-emoji.nvim'
 Plug 'fannheyward/telescope-coc.nvim'
 Plug 'tpope/vim-commentary'  "comment-out by gc
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'kyazdani42/nvim-web-devicons' " optional, for file icons
+" Plug 'kyazdani42/nvim-web-devicons' " optional, for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Plug 'junegunn/fzf.vim'
@@ -322,13 +322,13 @@ nnoremap <leader>U mQgewvU'Q
 nnoremap <leader>D mQgewvu'Q
 
 " select all text in current buffer
-nnoremap <leader>a ggVG
+" nnoremap <leader>a ggVG
 
 " Format entire file
 nnoremap <leader>fef ggVG=
 
 " jump to matching pair
-nnoremap <Leader>m %
+" nnoremap <Leader>m %
 
 " Visually select the text that was last edited/pasted
 nnoremap gV `[v`]
@@ -356,17 +356,16 @@ nnoremap <leader>gi <cmd>Telescope coc implementations<cr>
 nnoremap <leader>gr <cmd>Telescope coc references<cr>
 nnoremap <leader>gr <cmd>Telescope coc references<cr>
 
-nnoremap <leader>aa <cmd>Telescope coc line_code_action<cr>
-nnoremap <leader>ac <cmd>Telescope coc file_code_action<cr>
+" nnoremap <leader>aa <cmd>Telescope coc line_code_action<cr>
+" nnoremap <leader>ac <cmd>Telescope coc file_code_action<cr>
+nnoremap <leader>ac  <Plug>(coc-codeaction)
 
 nnoremap <leader>d <cmd>Telescope coc diagnostics<cr>
 nnoremap <leader>cc <cmd>Telescope coc commands<cr>
 nnoremap <leader>o <cmd>Telescope coc document_symbols<cr>
 
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
+nnoremap <leader>rn <Plug>(coc-rename)
+nnoremap <leader>qf  <Plug>(coc-fix-current)
 "}}}
 " COC {{{
 let g:coc_disable_startup_warning = 1
@@ -650,15 +649,17 @@ if has('termguicolors')
 	set termguicolors
 endif
 
+set t_Co=256   " This is may or may not needed.
+set background=dark " for the dark version
+" set background=light " for the light version
+
 let g:sonokai_style = 'default'
 let g:sonokai_enable_italic = 1
 let g:sonokai_disable_italic_comment = 1
+" let g:sonokai_transparent_background = 2
+let g:sonokai_better_performance = 1
 
 colorscheme sonokai
-
-" colorscheme one
-" set background=dark " for the dark version
-" set background=light " for the light version
 " }}}
 " RUN FUNC {{{
 " nnoremap <leader>r :call <SID>compile_and_run()<CR>
