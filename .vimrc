@@ -37,6 +37,8 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'zaid/vim-rec'
 Plug 'ledger/vim-ledger'
+Plug 'scy/vim-remind'
+Plug 'Gavinok/vim-troff'
 
 if has('nvim')
   function! UpdateRemotePlugins(...)
@@ -367,6 +369,9 @@ nnoremap <leader>o <cmd>Telescope coc document_symbols<cr>
 
 nnoremap <leader>rn <Plug>(coc-rename)
 nnoremap <leader>qf  <Plug>(coc-fix-current)
+
+nnoremap <leader>ca <Plug>(coc-calc-result-append)
+nnoremap <leader>cr <Plug>(coc-calc-result-replace)
 "}}}
 " COC {{{
 let g:coc_disable_startup_warning = 1
