@@ -35,8 +35,9 @@ Plug 'tpope/vim-commentary'  "comment-out by gc
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'kyazdani42/nvim-web-devicons' " optional, for file icons
 Plug 'kyazdani42/nvim-tree.lua'
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'junegunn/fzf.vim'
+Plug 'zaid/vim-rec'
+Plug 'ledger/vim-ledger'
+
 if has('nvim')
   function! UpdateRemotePlugins(...)
     " Needed to refresh runtime files
@@ -385,7 +386,6 @@ let g:coc_global_extensions = [
 			\ 'coc-lists',
 			\ 'coc-yank',
 			\ 'coc-prettier',
-			\ 'coc-sh',
 			\ 'coc-sql',
 			\ 'coc-svg',
 			\ 'coc-tsserver',
