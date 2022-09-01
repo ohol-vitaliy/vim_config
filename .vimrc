@@ -20,7 +20,6 @@ endif
 
 " PLUGINS {{{
 call plug#begin('~/.vim/plugged')
-" Plug 'skywind3000/asyncrun.vim'
 Plug 'Konfekt/FastFold'  " fast folding
 Plug 'godlygeek/tabular'
 Plug 'kana/vim-surround'
@@ -32,31 +31,21 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'xiyaowong/telescope-emoji.nvim'
 Plug 'fannheyward/telescope-coc.nvim'
 Plug 'tpope/vim-commentary'  "comment-out by gc
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" Plug 'kyazdani42/nvim-web-devicons' " optional, for file icons
-Plug 'kyazdani42/nvim-tree.lua'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'ptzz/lf.vim'
+Plug 'voldikss/vim-floaterm'
+Plug 'rakr/vim-one'
+
+Plug 'preservim/vim-markdown', { 'for': 'markdown' }
 Plug 'zaid/vim-rec'
 Plug 'ledger/vim-ledger'
 Plug 'scy/vim-remind'
 Plug 'Gavinok/vim-troff'
 
-if has('nvim')
-  function! UpdateRemotePlugins(...)
-    " Needed to refresh runtime files
-    let &rtp=&rtp
-    UpdateRemotePlugins
-  endfunction
-
-  Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
-else
-  Plug 'gelguy/wilder.nvim'
-endif
-
-" COMPLETION {{{
+Plug 'tpope/vim-fugitive'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'ervandew/supertab'  " for autocompletion using <TAB>
-" Plug 'ycm-core/YouCompleteMe', {'on': 'YCMToggle'}
-" }}}
+
 " JS {{{
 Plug 'mattn/emmet-vim'
 Plug 'pangloss/vim-javascript', {'for': 'javascript' }
@@ -70,17 +59,6 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main', 'for': ['jav
 " Plug 'davidhalter/jedi-vim', {'for': 'python'}   " jedi for python
 Plug 'tmhedberg/SimpylFold', {'for': 'python'}  " for nice python folding
 " Plug 'tweekmonster/impsort.vim', {'for': 'python'}  " color and sort imports
-" }}}
-" GIT {{{
-" Plug 'airblade/vim-gitgutter'  " show git changes to files in gutter
-Plug 'tpope/vim-fugitive'
-" }}}
-" Markdown {{{
-Plug 'preservim/vim-markdown', { 'for': 'markdown' }
-" }}}
-" Theme {{{
-Plug 'sainnhe/sonokai'
-Plug 'rakr/vim-one'
 " }}}
 call plug#end()
 " }}}
@@ -126,7 +104,7 @@ set pastetoggle=<F2>
 set path+=**
 set shortmess=atI
 set showcmd showmode
-set cmdheight=2
+set cmdheight=1
 set showmatch
 set spelllang=en,ru,pl,ua
 set synmaxcol=800
@@ -214,10 +192,10 @@ autocmd FileType vim setlocal foldmarker={{{,}}}
 autocmd FileType vim setlocal foldlevel=1
 autocmd FileType vim normal zM
 
-autocmd FileType c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmethod=marker
-autocmd FileType c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmarker={,}
-autocmd FileType c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldlevel=1
-autocmd FileType c,cpp,java,javascript,typescript,json,css,php,conf normal zM
+autocmd FileType awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmethod=marker
+autocmd FileType awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmarker={,}
+autocmd FileType awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldlevel=1
+autocmd FileType awk,c,cpp,java,javascript,typescript,json,css,php,conf normal zM
 
 autocmd FileType html,xhtml,xml,haml,jst setlocal foldmethod=indent
 autocmd FileType html,xhtml,xml,haml,hst setlocal foldlevel=20
@@ -344,7 +322,6 @@ nnoremap <leader>bb :buffers<cr>:buffer
 " PLUGIN KEYBINDS {{{
 " nnoremap <C-r> :AsyncRun ctags -R .<CR>
 nnoremap <leader>. :GFiles<cr>
-nnoremap <leader>n :NvimTreeFocus<cr>
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -406,16 +383,30 @@ let g:coc_global_extensions = [
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ CheckBackspace() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <C-x><C-z> coc#pum#visible() ? coc#pum#stop() : "\<C-x>\<C-z>"
+" remap for complete to use tab and <cr>
+inoremap <silent><expr> <TAB>
+	\ coc#pum#visible() ? coc#pum#next(1):
+	\ <SID>check_back_space() ? "\<Tab>" :
+	\ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <silent><expr> <c-space> coc#refresh()
+
+hi CocSearch ctermfg=12 guifg=#18A3FF
+hi CocMenuSel ctermbg=109 guibg=#13354A
+
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ CheckBackspace() ? "\<TAB>" :
+"       \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" function! CheckBackspace() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
 
 " Use <c-space> to trigger completion.
 if has('nvim')
@@ -555,6 +546,9 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_no_extensions_in_markdown = 1
 let g:vim_markdown_folding_disabled = 1
 " }}}
+" LF {{{
+let g:lf_replace_netrw = 1 " Open lf when vim opens a directory
+" }}}
 " JEDI {{{
 let g:python_host_prog= '/usr/bin/python'
 let g:python3_host_prog= '/usr/bin/python3.8'
@@ -618,53 +612,18 @@ let g:user_emmet_settings = { 'javascript.jsx' : { 'extends' : 'jsx', } }
 let g:asyncrun_mode=0
 let g:asyncrun_open=3
 "}}}
-" Wilder {{{
-call wilder#setup({'modes': [':', '/', '?']})
-call wilder#set_option('pipeline', [
-      \   wilder#branch(
-      \     wilder#python_file_finder_pipeline({
-      \       'file_command': ['find', '.', '-type', 'f', '-printf', '%P\n'],
-      \       'dir_command': ['find', '.', '-type', 'd', '-printf', '%P\n'],
-      \       'filters': ['fuzzy_filter', 'difflib_sorter'],
-      \     }),
-      \     wilder#cmdline_pipeline(),
-      \     wilder#python_search_pipeline(),
-      \   ),
-      \ ])
-call wilder#set_option('renderer', wilder#popupmenu_renderer(wilder#popupmenu_border_theme({
-      \ 'highlighter': wilder#basic_highlighter(),
-      \ 'min_width': '100%',
-      \ 'min_height': '50%',
-      \ 'reverse': 0,
-      \ 'pumblend': 20,
-      \ 'left': [
-      \   ' ', wilder#popupmenu_devicons(),
-      \ ],
-      \ 'right': [
-      \   ' ', wilder#popupmenu_scrollbar(),
-      \ ],
-      \ 'highlights': {
-      \   'border': 'Normal',
-      \ },
-      \ 'border': 'rounded',
-      \ })))
-" }}}
 " COLORSCHEME {{{
 if has('termguicolors')
 	set termguicolors
 endif
 
-set t_Co=256   " This is may or may not needed.
+" set t_Co=256   " This is may or may not needed.
 set background=dark " for the dark version
 " set background=light " for the light version
 
-let g:sonokai_style = 'default'
-let g:sonokai_enable_italic = 1
-let g:sonokai_disable_italic_comment = 1
-" let g:sonokai_transparent_background = 2
-let g:sonokai_better_performance = 1
+let g:one_allow_italics = 1 " I love italic for comments
 
-colorscheme sonokai
+colorscheme one
 " }}}
 " RUN FUNC {{{
 " nnoremap <leader>r :call <SID>compile_and_run()<CR>
