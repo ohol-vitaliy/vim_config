@@ -20,22 +20,19 @@ endif
 
 " PLUGINS {{{
 call plug#begin('~/.vim/plugged')
-Plug 'Konfekt/FastFold'  " fast folding
+" Plug 'Konfekt/FastFold'  " fast folding
 Plug 'godlygeek/tabular'
 Plug 'kana/vim-surround'
 Plug 'jiangmiao/auto-pairs'  ", { 'on': 'PAIRSToggle' }
 Plug 'w0rp/ale'  ", { 'on': 'ALEToggle' }
 Plug 'sheerun/vim-polyglot'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
-Plug 'xiyaowong/telescope-emoji.nvim'
-Plug 'fannheyward/telescope-coc.nvim'
 Plug 'tpope/vim-commentary'  "comment-out by gc
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'ptzz/lf.vim'
 Plug 'voldikss/vim-floaterm'
 Plug 'rakr/vim-one'
+Plug 'airblade/vim-rooter'
 
 Plug 'preservim/vim-markdown', { 'for': 'markdown' }
 Plug 'zaid/vim-rec'
@@ -317,69 +314,56 @@ nnoremap gV `[v`]
 nnoremap <silent> <leader>bn :bn<cr>
 nnoremap <silent> <leader>bp :bp<cr>
 nnoremap <leader>bd :bdelete<cr>
-nnoremap <leader>bb :buffers<cr>:buffer
+" nnoremap <leader>bb :buffers<cr>:buffer
 "}}}
 " PLUGIN KEYBINDS {{{
-" nnoremap <C-r> :AsyncRun ctags -R .<CR>
-nnoremap <leader>. :GFiles<cr>
+nnoremap   <silent>   <C-r>        :AsyncRun ctags -R.<cr>
+nnoremap   <silent>   <leader>.    :GFiles<cr>
+nnoremap   <silent>   <leader>n    :Lf<cr>
+nnoremap   <silent>   <leader>ff   :Rg<cr>
+nnoremap   <silent>   <leader>tt   :Tags<cr>
+nnoremap   <silent>   <leader>bb   :Buffers<cr>
 
-" Find files using Telescope command-line sugar.
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nnoremap <leader>fe <cmd>Telescope emoji<cr>
+nnoremap   <silent>   <leader>gd   <Plug>(coc-definition)
+nnoremap   <silent>   <leader>gt   <Plug>(coc-type-definition)
+nnoremap   <silent>   <leader>gi   <Plug>(coc-implementation)
+nnoremap   <silent>   <leader>gr   <Plug>(coc-references)
+nnoremap   <silent>   <leader>d    :<C-u>CocList diagnostics<cr>
+nnoremap   <silent>   <leader>e    :<C-u>CocList extensions<cr>
+nnoremap   <silent>   <leader>cc   :<C-u>CocList commands<cr>
+nnoremap   <silent>   <leader>o    :<C-u>CocList outline<cr>
+nnoremap   <silent>   <leader>o    :<C-u>CocList -I symbols<cr>
 
-nnoremap <leader>gd <cmd>Telescope coc definitions<cr>
-nnoremap <leader>gt <cmd>Telescope coc type_definitions<cr>
-nnoremap <leader>gi <cmd>Telescope coc implementations<cr>
-nnoremap <leader>gr <cmd>Telescope coc references<cr>
-nnoremap <leader>gr <cmd>Telescope coc references<cr>
-
-" nnoremap <leader>aa <cmd>Telescope coc line_code_action<cr>
-" nnoremap <leader>ac <cmd>Telescope coc file_code_action<cr>
-nnoremap <leader>ac  <Plug>(coc-codeaction)
-
-nnoremap <leader>d <cmd>Telescope coc diagnostics<cr>
-nnoremap <leader>cc <cmd>Telescope coc commands<cr>
-nnoremap <leader>o <cmd>Telescope coc document_symbols<cr>
-
-nnoremap <leader>rn <Plug>(coc-rename)
-nnoremap <leader>qf  <Plug>(coc-fix-current)
-
-nnoremap <leader>ca <Plug>(coc-calc-result-append)
-nnoremap <leader>cr <Plug>(coc-calc-result-replace)
+nnoremap   <silent>   <leader>ac   <Plug>(coc-codeaction)
+nnoremap   <silent>   <leader>rn   <Plug>(coc-rename)
+nnoremap   <silent>   <leader>qf   <Plug>(coc-fix-current)
+nnoremap   <silent>   <leader>ca   <Plug>(coc-calc-result-append)
+nnoremap   <silent>   <leader>cr   <Plug>(coc-calc-result-replace)
 "}}}
 " COC {{{
 let g:coc_disable_startup_warning = 1
 let g:coc_global_extensions = [
 			\ 'coc-calc',
 			\ 'coc-cmake',
-			\ 'coc-css',
-			\ 'coc-cssmodules',
-			\ 'coc-docker',
-			\ 'coc-emmet',
-			\ 'coc-eslint',
-			\ 'coc-highlight',
-			\ 'coc-html',
-			\ 'coc-html-css-support',
 			\ 'coc-json',
-			\ 'coc-lightbulb',
 			\ 'coc-lists',
 			\ 'coc-yank',
-			\ 'coc-prettier',
-			\ 'coc-sql',
-			\ 'coc-svg',
-			\ 'coc-tsserver',
-			\ 'coc-vimlsp',
 			\ 'coc-yaml',
-			\ 'coc-rome',
-			\ 'coc-symbol-line',
-			\ 'coc-tailwindcss',
-			\ 'coc-jedi',
-			\ 'coc-pyright',
+			\ 'coc-highlight',
+			\ 'coc-docker',
+			\ 'coc-sql',
+			\ 'coc-vimlsp',
 			\ ]
-" \ '@yaegassy/coc-pylsp'
+			" \
+			" \ 'coc-css',
+			" \ 'coc-cssmodules',
+			" \ 'coc-emmet',
+			" \ 'coc-eslint',
+			" \ 'coc-html',
+			" \ 'coc-html-css-support',
+			" \ 'coc-tsserver',
+			" \ 'coc-tailwindcss',
+			" \ '@yaegassy/coc-pylsp'
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
@@ -546,7 +530,12 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_no_extensions_in_markdown = 1
 let g:vim_markdown_folding_disabled = 1
 " }}}
+" ROOTER {{{
+let g:rooter_targets = '/,*'
+let g:rooter_patterns = ['=src', '.git', 'Makefile', '*.sln', 'build/env.sh', 'setup.sh', 'node_modules']
+" }}}
 " LF {{{
+let g:lf_map_keys = 0 " disable default keymap
 let g:lf_replace_netrw = 1 " Open lf when vim opens a directory
 " }}}
 " JEDI {{{
