@@ -33,6 +33,7 @@ Plug 'ptzz/lf.vim'
 Plug 'voldikss/vim-floaterm'
 Plug 'rakr/vim-one'
 Plug 'airblade/vim-rooter'
+Plug 'liuchengxu/vim-which-key'
 
 Plug 'preservim/vim-markdown', { 'for': 'markdown' }
 Plug 'zaid/vim-rec'
@@ -317,6 +318,7 @@ nnoremap <leader>bd :bdelete<cr>
 " nnoremap <leader>bb :buffers<cr>:buffer
 "}}}
 " PLUGIN KEYBINDS {{{
+nnoremap   <silent>   <leader>     :WhichKey ','<CR>
 nnoremap   <silent>   <C-r>        :AsyncRun ctags -R.<cr>
 nnoremap   <silent>   <leader>.    :GFiles<cr>
 nnoremap   <silent>   <leader>n    :Lf<cr>
@@ -332,7 +334,7 @@ nnoremap   <silent>   <leader>d    :<C-u>CocList diagnostics<cr>
 nnoremap   <silent>   <leader>e    :<C-u>CocList extensions<cr>
 nnoremap   <silent>   <leader>cc   :<C-u>CocList commands<cr>
 nnoremap   <silent>   <leader>o    :<C-u>CocList outline<cr>
-nnoremap   <silent>   <leader>o    :<C-u>CocList -I symbols<cr>
+nnoremap   <silent>   <leader>oo    :<C-u>CocList -I symbols<cr>
 
 nnoremap   <silent>   <leader>ac   <Plug>(coc-codeaction)
 nnoremap   <silent>   <leader>rn   <Plug>(coc-rename)
