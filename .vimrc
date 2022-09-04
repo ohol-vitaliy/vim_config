@@ -20,7 +20,7 @@ endif
 
 " PLUGINS {{{
 call plug#begin('~/.vim/plugged')
-" Plug 'Konfekt/FastFold'  " fast folding
+Plug 'skywind3000/asyncrun.vim'
 Plug 'godlygeek/tabular'
 Plug 'kana/vim-surround'
 Plug 'jiangmiao/auto-pairs'  ", { 'on': 'PAIRSToggle' }
@@ -41,9 +41,11 @@ Plug 'ledger/vim-ledger'
 Plug 'scy/vim-remind'
 Plug 'Gavinok/vim-troff'
 
-Plug 'tpope/vim-fugitive'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+" GIT {{{
+Plug 'tpope/vim-fugitive'
+" }}}
 " JS {{{
 Plug 'mattn/emmet-vim'
 Plug 'pangloss/vim-javascript', {'for': 'javascript' }
@@ -257,10 +259,6 @@ vnoremap <silent> k gk
 "cnoremap jk <esc>
 "vnoremap jk <esc>
 
-
-" Folding focus
-nnoremap <leader>z zMzvzz
-
 " Move blocks of text around
 nnoremap <C-j> :m+<CR>==
 nnoremap <C-k> :m-2<CR>==
@@ -270,9 +268,9 @@ vnoremap <C-j> :m'>+<CR>gv=gv
 vnoremap <C-k> :m-2<CR>gv=gv
 
 nnoremap <leader>sudo :w !sudo tee % <CR><CR>
-nnoremap <leader>q :q<CR>
-nnoremap <leader>w :w<CR>
-nnoremap <leader>x :q!<CR>
+nnoremap <silent><nowait> <leader>q :q<CR>
+nnoremap <silent><nowait> <leader>w :w<CR>
+nnoremap <silent><nowait> <leader>x :q!<CR>
 
 nnoremap <leader>j <C-w>j
 nnoremap <leader>k <C-w>k
@@ -304,7 +302,7 @@ nnoremap <leader>D mQgewvu'Q
 " nnoremap <leader>a ggVG
 
 " Format entire file
-nnoremap <leader>fef ggVG=
+nnoremap <leader>= ggVG=
 
 " jump to matching pair
 " nnoremap <Leader>m %
@@ -312,35 +310,40 @@ nnoremap <leader>fef ggVG=
 " Visually select the text that was last edited/pasted
 nnoremap gV `[v`]
 
-nnoremap <silent> <leader>bn :bn<cr>
-nnoremap <silent> <leader>bp :bp<cr>
-nnoremap <leader>bd :bdelete<cr>
+nnoremap <silent><nowait> <leader>bn :bn<cr>
+nnoremap <silent><nowait> <leader>bp :bp<cr>
+nnoremap <silent><nowait> <leader>bd :bdelete<cr>
 " nnoremap <leader>bb :buffers<cr>:buffer
 "}}}
 " PLUGIN KEYBINDS {{{
 nnoremap   <silent>   <leader>     :WhichKey ','<CR>
-nnoremap   <silent>   <C-r>        :AsyncRun ctags -R.<cr>
+" nnoremap   <silent>   <C-t>        :AsyncRun ctags -R.<cr>
 nnoremap   <silent>   <leader>.    :GFiles<cr>
 nnoremap   <silent>   <leader>n    :Lf<cr>
 nnoremap   <silent>   <leader>ff   :Rg<cr>
-nnoremap   <silent>   <leader>tt   :Tags<cr>
+nnoremap   <silent>   <leader>ft   :Tags<cr>
+
 nnoremap   <silent>   <leader>bb   :Buffers<cr>
 
-nnoremap   <silent>   <leader>gd   <Plug>(coc-definition)
-nnoremap   <silent>   <leader>gt   <Plug>(coc-type-definition)
-nnoremap   <silent>   <leader>gi   <Plug>(coc-implementation)
-nnoremap   <silent>   <leader>gr   <Plug>(coc-references)
-nnoremap   <silent>   <leader>d    :<C-u>CocList diagnostics<cr>
-nnoremap   <silent>   <leader>e    :<C-u>CocList extensions<cr>
+nnoremap   <silent>   <C-t>        :FloatermToggle<CR>
+tnoremap   <silent>   <C-t>        <C-\><C-n>:FloatermToggle<CR>
+nnoremap              <C-f>        :Tab /
+
+nnoremap   <silent>   <leader>cd   <Plug>(coc-definition)
+nnoremap   <silent>   <leader>ct   <Plug>(coc-type-definition)
+nnoremap   <silent>   <leader>ci   <Plug>(coc-implementation)
+nnoremap   <silent>   <leader>cr   <Plug>(coc-references)
+nnoremap   <silent>   <leader>cd   :<C-u>CocList diagnostics<cr>
+nnoremap   <silent>   <leader>ce   :<C-u>CocList extensions<cr>
 nnoremap   <silent>   <leader>cc   :<C-u>CocList commands<cr>
-nnoremap   <silent>   <leader>o    :<C-u>CocList outline<cr>
-nnoremap   <silent>   <leader>oo    :<C-u>CocList -I symbols<cr>
+nnoremap   <silent>   <leader>co   :<C-u>CocList outline<cr>
+nnoremap   <silent>   <leader>cs   :<C-u>CocList -I symbols<cr>
+" nnoremap   <silent>   <leader>ca   <Plug>(coc-calc-result-append)
+" nnoremap   <silent>   <leader>cr   <Plug>(coc-calc-result-replace)
 
 nnoremap   <silent>   <leader>ac   <Plug>(coc-codeaction)
 nnoremap   <silent>   <leader>rn   <Plug>(coc-rename)
 nnoremap   <silent>   <leader>qf   <Plug>(coc-fix-current)
-nnoremap   <silent>   <leader>ca   <Plug>(coc-calc-result-append)
-nnoremap   <silent>   <leader>cr   <Plug>(coc-calc-result-replace)
 "}}}
 " COC {{{
 let g:coc_disable_startup_warning = 1
@@ -526,6 +529,8 @@ highlight ALEError cterm=underline
 " nmap <silent> <C-M> <Plug>(ale_previous_wrap)
 " nmap <silent> <C-m> <Plug>(ale_next_wrap)
 "}}}
+" FLOATTERM {{{
+" }}}
 " MARKDOWN {{{
 let g:vim_markdown_follow_anchor = 1
 let g:vim_markdown_frontmatter = 1
@@ -596,8 +601,26 @@ let g:SimpylFold_docstring_preview=1
 let g:SimpylFold_fold_import=1
 "}}}
 " EMMET {{{
+let g:user_emmet_expandabbr_key = ''
+let g:user_emmet_expandword_key = ''
+let g:user_emmet_update_tag = ''
+let g:user_emmet_balancetaginward_key = ''
+let g:user_emmet_balancetagoutward_key = ''
+let g:user_emmet_next_key = ''
+let g:user_emmet_prev_key = ''
+let g:user_emmet_imagesize_key = ''
+let g:user_emmet_togglecomment_key = ''
+let g:user_emmet_splitjointag_key = ''
+let g:user_emmet_removetag_key = ''
+let g:user_emmet_anchorizeurl_key = ''
+let g:user_emmet_anchorizesummary_key = ''
+let g:user_emmet_mergelines_key = ''
+let g:user_emmet_codepretty_key = ''
+
 let g:user_emmet_leader_key=','
 let g:user_emmet_settings = { 'javascript.jsx' : { 'extends' : 'jsx', } }
+let g:user_emmet_install_global = 0
+autocmd FileType javascript,css,html,jsx,typescript,tsx imap <tab> <plug>(emmet-expand-abbr)
 " }}}
 " ASYNCRUN {{{
 let g:asyncrun_mode=0
@@ -608,7 +631,7 @@ if has('termguicolors')
 	set termguicolors
 endif
 
-" set t_Co=256   " This is may or may not needed.
+set t_Co=256   " This is may or may not needed.
 set background=dark " for the dark version
 " set background=light " for the light version
 
@@ -617,44 +640,24 @@ let g:one_allow_italics = 1 " I love italic for comments
 colorscheme one
 " }}}
 " RUN FUNC {{{
-" nnoremap <leader>r :call <SID>compile_and_run()<CR>
-" " command R :call Runit()
-" 
-" let pipenv_venv_path = system('pipenv --venv')
-" if shell_error == 0
-"   let venv_path = substitute(pipenv_venv_path, '\n', '', '')
-"   let g:python3_host_prog = pipenv_venv_path . '/bin/python3.5'
-"   let g:python_host_prog = pipenv_venv_path . '/bin/python'
-" else
-"   let g:python3_host_prog = '/usr/bin/python3.5'
-"   let g:python_host_prog = '/usr/bin/python2'
-" endif
-" 
-" function! s:compile_and_run()
-"     exec 'w'
-"     if &filetype == 'c'
-"         exec "AsyncRun! gcc % -o %<; time ./%<"
-"     elseif &filetype == 'cpp'
-"        exec "AsyncRun! g++ -std=c++11 % -o %<; time ./%<"
-"     elseif &filetype == 'java'
-"        exec "AsyncRun! javac %; time java %<"
-"     elseif &filetype == 'sh'
-"        exec "! time bash %"
-"     elseif &filetype == 'python'
-"        exec "AsyncRun! time python3.5 %"
-"     elseif &filetype == 'ruby'
-"        exec "AsyncRun! time ruby %"
-"     elseif &filetype == 'javascript'
-"        exec "AsyncRun! time node %"
-"     elseif &filetype == 'lua'
-"        exec "AsyncRun! time lua %"
-"     elseif &filetype == 'coffee'
-"        exec "AsyncRun! time coffee %"
-"     elseif &filetype == 'php'
-"        exec "AsyncRun! time php %"
-"     elseif &filetype == 'tex'
-"        exec "AsyncRun! time latexmk -pvc -pdf %"
-"     endif
-" endfunction
+nnoremap <C-r> :call <SID>compile_and_run()<CR>
+command R :call <SID>compile_and_run()
+
+function! s:compile_and_run()
+	exec 'w'
+	if &filetype == 'sh'
+		exec "AsyncRun! time bash %"
+	elseif &filetype == 'awk'
+		exec "AsyncRun! time awk -f %"
+	elseif &filetype == 'rem'
+		exec "AsyncRun! time remind -m -b1 %"
+	elseif &filetype == 'python'
+		exec "AsyncRun! time python3 %"
+	elseif &filetype == 'tex'
+		exec "AsyncRun! time latexmk -pvc -pdf %"
+	else
+		exec "echo \"nothing found\""
+	endif
+endfunction
 "}}}
 
