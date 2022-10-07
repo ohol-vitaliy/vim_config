@@ -113,6 +113,9 @@ set ts=4 sts=4 sw=4 noexpandtab smarttab
 set ttimeoutlen=0
 set undolevels=1000
 set updatetime=300
+set modeline
+set modelines=5
+set foldlevelstart=0
 
 if !&scrolloff
   set scrolloff=3       " Show next 3 lines while scrolling.
@@ -186,11 +189,12 @@ autocmd FileType python,javascript,typescript,json setlocal ts=4 sw=4 sts=4 expa
 autocmd FileType php,snippets setlocal ts=4 sw=4 sts=4 noexpandtab
 autocmd FileType html,xhtml setlocal ts=2 sts=2 sw=2
 autocmd FileType make setlocal ts=4 sts=2 sw=2 noexpandtab
+autocmd FileType yaml setlocal ts=2 sw=2 sts=2 expandtab
 
-autocmd FileType vim setlocal foldmethod=marker
-autocmd FileType vim setlocal foldmarker={{{,}}}
-autocmd FileType vim setlocal foldlevel=1
-autocmd FileType vim normal zM
+autocmd FileType yaml,vim setlocal foldmethod=marker
+autocmd FileType yaml,vim setlocal foldmarker={{{,}}}
+autocmd FileType yaml,vim setlocal foldlevel=1
+autocmd FileType yaml,vim normal zM
 
 autocmd FileType awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmethod=marker
 autocmd FileType awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmarker={,}
