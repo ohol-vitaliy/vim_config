@@ -196,13 +196,13 @@ autocmd FileType yaml,vim setlocal foldmarker={{{,}}}
 autocmd FileType yaml,vim setlocal foldlevel=1
 autocmd FileType yaml,vim normal zM
 
-autocmd FileType awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmethod=marker
-autocmd FileType awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmarker={,}
-autocmd FileType awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldlevel=1
-autocmd FileType awk,c,cpp,java,javascript,typescript,json,css,php,conf normal zM
+autocmd FileType sh,awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmethod=marker
+autocmd FileType sh,awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldmarker={,}
+autocmd FileType sh,awk,c,cpp,java,javascript,typescript,json,css,php,conf setlocal foldlevel=1
+autocmd FileType sh,awk,c,cpp,java,javascript,typescript,json,css,php,conf normal zM
 
 autocmd FileType html,xhtml,xml,haml,jst setlocal foldmethod=indent
-autocmd FileType html,xhtml,xml,haml,hst setlocal foldlevel=20
+autocmd FileType html,xhtml,xml,haml,jst setlocal foldlevel=20
 autocmd FileType html,xhtml,xml,haml,jst normal zR
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " Disable comment new line
