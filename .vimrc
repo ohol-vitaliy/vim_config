@@ -47,7 +47,7 @@ Plug 'leafgarland/typescript-vim', {'for': 'javascript' }
 Plug 'styled-components/vim-styled-components', { 'branch': 'main', 'for': ['javascript','typescript','css','html'] }
 " }}}
 " PYTHON {{{
-" Plug 'davidhalter/jedi-vim', {'for': 'python'}   " jedi for python
+Plug 'davidhalter/jedi-vim', {'for': 'python'}   " jedi for python
 Plug 'tmhedberg/SimpylFold', {'for': 'python'}  " for nice python folding
 " Plug 'tweekmonster/impsort.vim', {'for': 'python'}  " color and sort imports
 " }}}
@@ -400,7 +400,7 @@ let g:rooter_patterns = ['=src', '.git', 'Makefile', '*.sln', 'build/env.sh', 's
 " }}}
 " JEDI {{{
 let g:python_host_prog= '/usr/bin/python'
-let g:python3_host_prog= '/usr/bin/python3.8'
+let g:python3_host_prog= '/usr/bin/python3'
 let g:jedi#auto_initialization = 1
 let g:jedi#completions_enabled = 1
 let g:jedi#popup_on_dot = 1
